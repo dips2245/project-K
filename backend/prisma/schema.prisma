@@ -1,0 +1,234 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  customer
+  admin
+}
+
+enum QuestionType {
+  single_select
+  multi_select
+  range
+  text
+}
+
+enum PaymentMethod {
+  cod
+  whatsapp
+  khalti
+  esewa
+}
+
+enum PaymentStatus {
+  pending
+  paid
+  failed
+}
+
+enum OrderStatus {
+  pending
+  confirmed
+  shipped
+  delivered
+  cancelled
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(customer)
+  phone     String?
+  addresses Json?    @default("[]")
+  refreshToken String? @map("refresh_token")
+
+  orders        Order[]
+  quizResponses QuizResponse[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Category {
+  id                 String    @id @default(uuid())
+  nameEn             String    @map("name_en")
+  nameNe             String?   @map("name_ne")
+  slug               String    @unique
+  descriptionEn      String?   @map("description_en")
+  descriptionNe      String?   @map("description_ne")
+  image              String?
+  parentCategoryId   String?   @map("parent_category_id")
+  parentCategory     Category? @relation("CategoryTree", fields: [parentCategoryId], references: [id])
+  children           Category[] @relation("CategoryTree")
+  isActive           Boolean   @default(true) @map("is_active")
+
+  products Product[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("categories")
+}
+
+model Product {
+  id              String   @id @default(uuid())
+  nameEn          String   @map("name_en")
+  nameNe          String?  @map("name_ne")
+  slug            String   @unique
+  descriptionEn   String   @map("description_en")
+  descriptionNe   String?  @map("description_ne")
+  price           Float
+  comparePrice    Float  @default(0) @map("compare_price")
+  images          Json?    @default("[]")
+  categoryId      String   @map("category_id")
+  category        Category @relation(fields: [categoryId], references: [id])
+  tags            Json?    @default("[]")
+  stock           Int      @default(0)
+  featured        Boolean  @default(false)
+  isActive        Boolean  @default(true) @map("is_active")
+  theme           String   @default("default")
+  specifications  Json?    @default("{}")
+  colors          Json?    @default("[]")
+  ratings         Json?    @default("{\"average\":0,\"count\":0}")
+
+  orderItems        OrderItem[]
+  quizRecommendations QuizRecommendation[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([slug])
+  @@map("products")
+}
+
+model Order {
+  id                 String        @id @default(uuid())
+  userId             String        @map("user_id")
+  user               User          @relation(fields: [userId], references: [id])
+  shippingAddress    Json          @map("shipping_address")
+  paymentMethod      PaymentMethod @default(cod) @map("payment_method")
+  paymentStatus      PaymentStatus @default(pending) @map("payment_status")
+  status             OrderStatus   @default(pending)
+  totalAmount        Float       @map("total_amount")
+  whatsappRedirected Boolean       @default(false) @map("whatsapp_redirected")
+  notes              String?
+
+  items OrderItem[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String  @map("order_id")
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
+  name      String
+  image     String?
+  price     Float
+  quantity  Int
+
+  @@map("order_items")
+}
+
+model Quiz {
+  id            String   @id @default(uuid())
+  titleEn       String   @map("title_en")
+  titleNe       String   @map("title_ne")
+  descriptionEn String?  @map("description_en")
+  descriptionNe String?  @map("description_ne")
+  isActive      Boolean  @default(true) @map("is_active")
+
+  questions QuizQuestion[]
+  responses QuizResponse[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("quizzes")
+}
+
+model QuizQuestion {
+  id       String       @id @default(uuid())
+  quizId   String       @map("quiz_id")
+  quiz     Quiz         @relation(fields: [quizId], references: [id])
+  order    Int
+  textEn   String       @map("text_en")
+  textNe   String       @map("text_ne")
+  type     QuestionType @default(single_select)
+  category String?
+  required Boolean      @default(true)
+
+  options  QuizOption[]
+
+  @@map("quiz_questions")
+}
+
+model QuizOption {
+  id         String       @id @default(uuid())
+  questionId String       @map("question_id")
+  question   QuizQuestion @relation(fields: [questionId], references: [id])
+  labelEn    String       @map("label_en")
+  labelNe    String       @map("label_ne")
+  value      String
+  tags       Json?        @default("[]")
+  weight     Int          @default(1)
+
+  @@map("quiz_options")
+}
+
+model QuizResponse {
+  id          String   @id @default(uuid())
+  quizId      String   @map("quiz_id")
+  quiz        Quiz     @relation(fields: [quizId], references: [id])
+  userId      String?  @map("user_id")
+  user        User?    @relation(fields: [userId], references: [id])
+  ipAddress   String?  @map("ip_address")
+  sessionId   String?  @map("session_id")
+  matchedTags Json?    @default("[]") @map("matched_tags")
+
+  answers         QuizAnswer[]
+  recommendations QuizRecommendation[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("quiz_responses")
+}
+
+model QuizAnswer {
+  id              String   @id @default(uuid())
+  responseId      String   @map("response_id")
+  response        QuizResponse @relation(fields: [responseId], references: [id])
+  questionId      String   @map("question_id")
+  selectedOptions Json?    @default("[]") @map("selected_options")
+  tags            Json?    @default("[]")
+
+  @@map("quiz_answers")
+}
+
+model QuizRecommendation {
+  id         String   @id @default(uuid())
+  responseId String   @map("response_id")
+  response   QuizResponse @relation(fields: [responseId], references: [id])
+  productId  String   @map("product_id")
+  product    Product  @relation(fields: [productId], references: [id])
+  score      Int?
+  reason     Json?    @default("[]")
+
+  @@map("quiz_recommendations")
+}
