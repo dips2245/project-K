@@ -28,6 +28,8 @@ const seedData = async () => {
         password: await bcrypt.hash(process.env.INITIAL_ADMIN_PASSWORD || 'admin123', salt),
         role: 'admin',
         phone: '9800000000',
+        isVerified: true,
+        termsAccepted: true,
       },
     });
     console.log('✅ Admin user created:', admin.email);
@@ -39,6 +41,8 @@ const seedData = async () => {
         password: await bcrypt.hash('customer123', salt),
         role: 'customer',
         phone: '9800000001',
+        isVerified: true,
+        termsAccepted: true,
       },
     });
     console.log('✅ Demo customer created:', customer.email);

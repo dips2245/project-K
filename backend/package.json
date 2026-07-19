@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "npx prisma generate && npx prisma db push && node server.js",
+    "build": "npx prisma generate",
     "dev": "nodemon server.js",
     "seed": "node src/seeds/seed.js",
-    "seed:quiz": "node src/seeds/seedQuiz.js"
+    "seed:quiz": "node src/seeds/seedQuiz.js",
+    "postinstall": "npx prisma generate"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +25,7 @@
     "express-validator": "^7.3.2",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.1.1",
+    "nodemailer": "^9.0.3",
     "prisma": "^6.19.3",
     "slugify": "^1.6.9"
   },

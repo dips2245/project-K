@@ -4,10 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { FiShoppingBag, FiMinus, FiPlus, FiChevronDown, FiChevronUp, FiShield, FiHeart, FiSettings, FiTruck } from 'react-icons/fi';
 import { productAPI } from '../../hooks/api';
 import { useCart } from '../../context/CartContext';
+import { useWhatsApp } from '../../hooks/useWhatsApp';
 import ProductCard, { StarRating } from '../../components/ui/ProductCard';
 
 const ProductDetail = () => {
     const { slug } = useParams();
+    const { number } = useWhatsApp();
     const { t, i18n } = useTranslation();
     const { addItem } = useCart();
     const [product, setProduct] = useState(null);
@@ -61,7 +63,7 @@ const ProductDetail = () => {
 
     if (loading) {
         return (
-            <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '60px 40px', fontFamily: "'Plus Jakarta Sans', sans-serif", background: '#0a0a0a', minHeight: '100vh' }}>
+            <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '60px 40px', fontFamily: "'Plus Jakarta Sans', sans-serif", background: '#000000', minHeight: '100vh' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px' }} className="pdp-grid">
                     <div style={{ aspectRatio: '4/5', borderRadius: '14px', background: 'linear-gradient(90deg, #1a1a1a 25%, #222 50%, #1a1a1a 75%)', backgroundSize: '200% 100%', animation: 'shimmer 1.5s infinite' }} />
                     <div>
@@ -80,10 +82,10 @@ const ProductDetail = () => {
 
     if (!product) {
         return (
-            <div style={{ textAlign: 'center', padding: '100px 20px', fontFamily: "'Plus Jakarta Sans', sans-serif", background: '#0a0a0a', minHeight: '100vh' }}>
+            <div style={{ textAlign: 'center', padding: '100px 20px', fontFamily: "'Plus Jakarta Sans', sans-serif", background: '#000000', minHeight: '100vh' }}>
                 <div style={{ fontSize: '48px', opacity: 0.3, marginBottom: '16px' }}>✦</div>
                 <p style={{ fontSize: '16px', color: '#e0e0e0', marginBottom: '8px' }}>Product not found</p>
-                <Link to="/shop" style={{ color: '#d4736e', fontSize: '14px' }}>← Back to Shop</Link>
+                <Link to="/shop" style={{ color: '#888888', fontSize: '14px' }}>← Back to Shop</Link>
             </div>
         );
     }
@@ -99,7 +101,7 @@ const ProductDetail = () => {
 
     return (
         <div style={{
-            minHeight: '100vh', background: '#0a0a0a',
+            minHeight: '100vh', background: '#000000',
             fontFamily: "'Plus Jakarta Sans', 'PolySans', sans-serif",
         }}>
             {/* Breadcrumb */}
@@ -109,12 +111,12 @@ const ProductDetail = () => {
                 fontSize: '12px', color: '#888',
             }}>
                 <Link to="/" style={{ color: '#888', textDecoration: 'none', transition: 'color 0.15s' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#d4736e'}
+                    onMouseEnter={e => e.currentTarget.style.color = '#888888'}
                     onMouseLeave={e => e.currentTarget.style.color = '#888'}
                 >Home</Link>
                 <span>/</span>
                 <Link to="/shop" style={{ color: '#888', textDecoration: 'none', transition: 'color 0.15s' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#d4736e'}
+                    onMouseEnter={e => e.currentTarget.style.color = '#888888'}
                     onMouseLeave={e => e.currentTarget.style.color = '#888'}
                 >Shop</Link>
                 <span>/</span>
@@ -157,7 +159,7 @@ const ProductDetail = () => {
                         {product.comparePrice > product.price && (
                             <span style={{
                                 position: 'absolute', top: '16px', left: '16px',
-                                background: '#d4736e', color: '#fff',
+                                background: '#888888', color: '#fff',
                                 fontSize: '11px', fontWeight: 700,
                                 padding: '5px 12px', borderRadius: '20px',
                                 letterSpacing: '0.04em',
@@ -180,7 +182,7 @@ const ProductDetail = () => {
                             onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
                             onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
                         >
-                            <FiHeart size={18} fill={wishlisted ? '#d4736e' : 'none'} color={wishlisted ? '#d4736e' : '#aaa'} />
+                            <FiHeart size={18} fill={wishlisted ? '#888888' : 'none'} color={wishlisted ? '#888888' : '#aaa'} />
                         </button>
                     </div>
 
@@ -194,7 +196,7 @@ const ProductDetail = () => {
                                     style={{
                                         width: '72px', height: '72px',
                                         borderRadius: '8px', overflow: 'hidden',
-                                        border: `2px solid ${activeImageIndex === i ? '#d4736e' : '#e8e6e3'}`,
+                                        border: `2px solid ${activeImageIndex === i ? '#888888' : '#cccccc'}`,
                                         cursor: 'pointer', padding: 0,
                                         opacity: activeImageIndex === i ? 1 : 0.65,
                                         transition: 'all 0.2s',
@@ -217,7 +219,7 @@ const ProductDetail = () => {
                         <span style={{
                             fontSize: '10.5px', fontWeight: 700,
                             letterSpacing: '0.14em', textTransform: 'uppercase',
-                            color: '#d4736e',
+                            color: '#888888',
                             display: 'inline-block', marginBottom: '8px',
                         }}>
                             {product.category.name?.[lang] || product.category.name?.en || 'Collection'}
@@ -248,7 +250,7 @@ const ProductDetail = () => {
                         borderBottom: '1px solid #222',
                         marginBottom: '24px',
                     }}>
-                        <span style={{ fontSize: '28px', fontWeight: 700, color: '#0c0c0c', letterSpacing: '-0.02em' }}>
+                        <span style={{ fontSize: '28px', fontWeight: 700, color: '#fff', letterSpacing: '-0.02em' }}>
                             Rs. {product.price.toLocaleString()}
                         </span>
                         {product.comparePrice > product.price && (
@@ -258,7 +260,7 @@ const ProductDetail = () => {
                         )}
                         {product.comparePrice > product.price && (
                             <span style={{
-                                fontSize: '12px', fontWeight: 600, color: '#d4736e',
+                                fontSize: '12px', fontWeight: 600, color: '#888888',
                                 background: 'rgba(212,115,110,0.08)',
                                 padding: '3px 10px', borderRadius: '12px',
                             }}>
@@ -302,7 +304,7 @@ const ProductDetail = () => {
                             onClick={() => setDescOpen(v => !v)}
                             style={{
                                 width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                                padding: '12px 0', background: 'none', border: 'none', borderBottom: '1px solid #e8e6e3',
+                                padding: '12px 0', background: 'none', border: 'none', borderBottom: '1px solid #cccccc',
                                 cursor: 'pointer', fontSize: '11px', fontWeight: 700,
                                 letterSpacing: '0.1em', textTransform: 'uppercase',
                                 color: '#fff', fontFamily: 'inherit',
@@ -328,7 +330,7 @@ const ProductDetail = () => {
                                 onClick={() => setSpecsOpen(v => !v)}
                                 style={{
                                     width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                                    padding: '12px 0', background: 'none', border: 'none', borderBottom: '1px solid #e8e6e3',
+                                    padding: '12px 0', background: 'none', border: 'none', borderBottom: '1px solid #cccccc',
                                     cursor: 'pointer', fontSize: '11px', fontWeight: 700,
                                     letterSpacing: '0.1em', textTransform: 'uppercase',
                                     color: '#fff', fontFamily: 'inherit',
@@ -372,7 +374,7 @@ const ProductDetail = () => {
                                     cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                                     color: '#5a5a5a', transition: 'color 0.15s',
                                 }}
-                                    onMouseEnter={e => e.currentTarget.style.color = '#d4736e'}
+                                    onMouseEnter={e => e.currentTarget.style.color = '#888888'}
                                     onMouseLeave={e => e.currentTarget.style.color = '#5a5a5a'}
                                 >
                                     <FiMinus size={14} />
@@ -388,7 +390,7 @@ const ProductDetail = () => {
                                     cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                                     color: '#5a5a5a', transition: 'color 0.15s',
                                 }}
-                                    onMouseEnter={e => e.currentTarget.style.color = '#d4736e'}
+                                    onMouseEnter={e => e.currentTarget.style.color = '#888888'}
                                     onMouseLeave={e => e.currentTarget.style.color = '#5a5a5a'}
                                 >
                                     <FiPlus size={14} />
@@ -402,8 +404,8 @@ const ProductDetail = () => {
                                 disabled={product.stock === 0}
                                 style={{
                                     flex: 1, padding: '15px 24px',
-                                    background: added ? '#4caf50' : product.stock > 0 ? '#fff' : '#333',
-                                    color: added || product.stock > 0 ? (added ? '#fff' : '#000') : '#666',
+                                    background: added ? '#4caf50' : product.stock > 0 ? '#000000' : '#333',
+                                    color: added || product.stock > 0 ? '#ffffff' : '#666',
                                     border: 'none', borderRadius: '6px',
                                     fontSize: '13px', fontWeight: 700,
                                     letterSpacing: '0.06em', textTransform: 'uppercase',
@@ -412,8 +414,8 @@ const ProductDetail = () => {
                                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                                     transition: 'all 0.25s',
                                 }}
-                                onMouseEnter={e => { if (product.stock > 0 && !added) { e.currentTarget.style.background = '#d4736e'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.boxShadow = '0 6px 24px rgba(212,115,110,0.3)'; } }}
-                                onMouseLeave={e => { if (product.stock > 0 && !added) { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = '#000'; e.currentTarget.style.boxShadow = 'none'; } }}
+                                onMouseEnter={e => { if (product.stock > 0 && !added) { e.currentTarget.style.background = '#333333'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.boxShadow = '0 6px 24px rgba(255,255,255,0.15)'; } }}
+                                onMouseLeave={e => { if (product.stock > 0 && !added) { e.currentTarget.style.background = '#000000'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.boxShadow = 'none'; } }}
                             >
                                 <FiShoppingBag size={15} />
                                 {added ? '✓ Added!' : product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
@@ -421,7 +423,7 @@ const ProductDetail = () => {
 
                             {product.stock > 0 && (
                                 <a
-                                    href={`https://wa.me/9779800000000?text=${encodeURIComponent(`Hi! I'd like to order: ${name}${activeColor ? ` (${activeColor.name})` : ''} - Rs. ${product.price.toLocaleString()} x ${quantity}`)}`}
+                                    href={`https://wa.me/${number}?text=${encodeURIComponent(`Hi! I'd like to order: ${name}${activeColor ? ` (${activeColor.name})` : ''} - Rs. ${product.price.toLocaleString()} x ${quantity}`)}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     style={{
@@ -460,7 +462,7 @@ const ProductDetail = () => {
                                 display: 'flex', flexDirection: 'column', alignItems: 'center',
                                 gap: '6px', textAlign: 'center',
                             }}>
-                                <Icon size={18} color="#d4736e" />
+                                <Icon size={18} color="#888888" />
                                 <span style={{ fontSize: '10.5px', color: '#7a7a7a', lineHeight: 1.3, fontWeight: 500 }}>{label}</span>
                             </div>
                         ))}
@@ -477,7 +479,7 @@ const ProductDetail = () => {
                 }}>
                     <div style={{ maxWidth: '1300px', margin: '0 auto' }}>
                         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-                            <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#d4736e', fontWeight: 600, marginBottom: '8px' }}>You May Also Like</p>
+                            <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.12em', color: '#888888', fontWeight: 600, marginBottom: '8px' }}>You May Also Like</p>
                             <h2 style={{ fontSize: 'clamp(24px, 3vw, 36px)', fontWeight: 700, letterSpacing: '-0.03em', color: '#0c0c0c', margin: 0, fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
                                 Related Products
                             </h2>

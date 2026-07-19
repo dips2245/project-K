@@ -26,7 +26,7 @@ const Cart = () => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     margin: '0 auto 28px',
-                    color: '#d4736e',
+                    color: '#888888',
                 }}>
                     <FiShoppingBag size={40} />
                 </div>
@@ -66,7 +66,7 @@ const Cart = () => {
                         transition: 'transform 0.2s, background 0.2s',
                     }}
                     onMouseEnter={e => {
-                        e.currentTarget.style.background = '#d4736e';
+                        e.currentTarget.style.background = '#888888';
                         e.currentTarget.style.transform = 'translateY(-2px)';
                     }}
                     onMouseLeave={e => {
@@ -82,7 +82,7 @@ const Cart = () => {
 
     return (
         <div style={{
-            background: '#0a0a0a',
+            background: '#000000',
             minHeight: '80vh',
             padding: '60px 0 100px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -188,7 +188,7 @@ const Cart = () => {
                                                         transition: 'color 0.2s',
                                                         color: '#e0e0e0',
                                                     }}
-                                                        onMouseEnter={e => e.currentTarget.style.color = '#d4736e'}
+                                                        onMouseEnter={e => e.currentTarget.style.color = '#888888'}
                                                         onMouseLeave={e => e.currentTarget.style.color = '#e0e0e0'}
                                                     >
                                                         {name}
@@ -367,8 +367,8 @@ const Cart = () => {
                                     gap: '10px',
                                     width: '100%',
                                     padding: '18px',
-                                    background: '#fff',
-                                    color: '#000',
+                                    background: '#000000',
+                                    color: '#ffffff',
                                     border: 'none',
                                     borderRadius: '30px',
                                     fontSize: '13.5px',
@@ -381,10 +381,10 @@ const Cart = () => {
                                     marginBottom: '16px',
                                 }}
                                 onMouseEnter={e => {
-                                    e.currentTarget.style.background = '#d4736e';
+                                    e.currentTarget.style.background = '#333333';
                                 }}
                                 onMouseLeave={e => {
-                                    e.currentTarget.style.background = '#fff';
+                                    e.currentTarget.style.background = '#000000';
                                 }}
                             >
                                 {t('cart.checkout') || 'Secure Checkout'} <FiArrowRight size={15} />
@@ -417,15 +417,15 @@ const Cart = () => {
                                 gap: '14px',
                             }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                    <FiShield style={{ color: '#d4736e' }} size={16} />
+                                    <FiShield style={{ color: '#888888' }} size={16} />
                                     <span style={{ fontSize: '12.5px', color: '#5a5a5a' }}>100% Privacy Guaranteed</span>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                    <FiTruck style={{ color: '#d4736e' }} size={16} />
+                                    <FiTruck style={{ color: '#888888' }} size={16} />
                                     <span style={{ fontSize: '12.5px', color: '#5a5a5a' }}>Double-Boxed Plain Packaging</span>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                    <FiRefreshCw style={{ color: '#d4736e' }} size={16} />
+                                    <FiRefreshCw style={{ color: '#888888' }} size={16} />
                                     <span style={{ fontSize: '12.5px', color: '#5a5a5a' }}>1 Year Warranty Support</span>
                                 </div>
                             </div>

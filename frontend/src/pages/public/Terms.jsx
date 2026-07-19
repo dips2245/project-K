@@ -36,7 +36,7 @@ const Terms = () => {
     return (
         <div style={{
             minHeight: '100vh',
-            background: '#0a0a0a',
+            background: '#000000',
             fontFamily: "'Plus Jakarta Sans', 'PolySans', sans-serif",
             color: '#e0e0e0',
         }}>
@@ -241,7 +241,7 @@ const Terms = () => {
                     <p style={{ fontSize: '12px', color: '#666', margin: 0 }}>
                         &copy; {year} Bliss Nepal. {t('footer.rights')}
                     </p>
-                    <p style={{ fontSize: '11px', color: '#d4736e', margin: '8px 0 0', fontWeight: 600 }}>
+                    <p style={{ fontSize: '11px', color: '#888888', margin: '8px 0 0', fontWeight: 600 }}>
                         18+ Adult Store — Discreet Packaging Always
                     </p>
                 </div>

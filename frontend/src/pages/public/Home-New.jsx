@@ -1,19 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { FiArrowRight, FiShield, FiPackage, FiStar, FiHeart, FiChevronLeft, FiChevronRight, FiShoppingBag } from 'react-icons/fi';
 import { useCart } from '../../context/CartContext';
 
 // ─── Uploaded assets ───
-import heroVideo from '../../assets/video/video demo.webm';
-import img07 from '../../assets/images/07.webp';
-import confidentialImg from '../../assets/images/confidential.webp';
-import confidentialImg02 from '../../assets/images/confidential_002.webp';
-import homepageBlock5 from '../../assets/images/homepage layout_desktop_BLOCK 5.webp';
-import quizImg from '../../assets/images/quiz.webp';
+import confidentialImg from '../../assets/images/img_girl.png';
+import homepageBlock5 from '../../assets/images/next gen.png';
+import quizImg from '../../assets/images/er.png';
 
 // ─── LELO-style color palette ───
-const ROSE = '#c97b6e';
-const DARK = '#0f0f0f';
+const ROSE = '#ffffff';
+const DARK = '#000000';
 const WHITE = '#ffffff';
 
 // ─── Mock products (shown while API loads / fallback) ───
@@ -48,13 +45,13 @@ const PRODUCT_IMGS = [
 
 // Editorial lifestyle images — using uploaded assets
 const LIFESTYLE_IMGS = [
-    confidentialImg02,
-    img07,
+    quizImg,
+    confidentialImg,
     homepageBlock5,
 ];
 
 const CATEGORIES = [
-    { label: 'For Her', sub: 'Vibrators & Stimulators', to: '/shop?category=for-her', img: '/uploads/rose_petal_massager.png', color: '#c97b6e' },
+    { label: 'For Her', sub: 'Vibrators & Stimulators', to: '/shop?category=for-her', img: '/uploads/rose_petal_massager.png', color: '#999999' },
     { label: 'For Him', sub: 'Prostate & More', to: '/shop?category=for-him', img: '/uploads/velvet_dreams_vibrator.png', color: '#6b7fc4' },
     { label: 'For Couples', sub: 'Remote & Wearable', to: '/shop?category=couples', img: '/uploads/silk_touch_vibrator.png', color: '#9b7ac4' },
     { label: 'Bestsellers', sub: 'Fan Favourites', to: '/shop?sort=bestseller', img: '/uploads/aqua_glide_lubricant.png', color: '#c4a96b' },
@@ -85,6 +82,9 @@ const ProductCard = ({ product, index }) => {
     const imgSrc = (product.images && product.images[0]) ? product.images[0] : PRODUCT_IMGS[index % PRODUCT_IMGS.length];
     const discount = product.comparePrice > product.price
         ? Math.round((1 - product.price / product.comparePrice) * 100) : null;
+
+    const tags = Array.isArray(product.tags) ? product.tags : [];
+    const badge = product.badge || (tags.includes('new') && 'New') || (tags.includes('bestseller') && 'Bestseller') || null;
 
     const handleAdd = (e) => {
         e.preventDefault();
@@ -124,18 +124,18 @@ const ProductCard = ({ product, index }) => {
                 />
 
                 {/* Badges */}
-                {product.badge && (
+                {badge && (
                     <span style={{
                         position: 'absolute', top: '12px', left: '12px',
-                        background: product.badge === 'New' ? '#1a1a1a' : ROSE,
+                        background: badge === 'New' ? '#1a1a1a' : ROSE,
                         color: '#fff', fontSize: '10px', fontWeight: 700,
                         padding: '4px 10px', borderRadius: '20px',
                         letterSpacing: '0.06em', textTransform: 'uppercase',
-                    }}>{product.badge}</span>
+                    }}>{badge}</span>
                 )}
                 {discount && (
                     <span style={{
-                        position: 'absolute', top: product.badge ? '38px' : '12px', left: '12px',
+                        position: 'absolute', top: badge ? '38px' : '12px', left: '12px',
                         background: 'rgba(255,255,255,0.9)', color: ROSE,
                         fontSize: '10px', fontWeight: 700,
                         padding: '4px 10px', borderRadius: '20px',
@@ -205,8 +205,6 @@ export default function Home() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [testimonialIdx, setTestimonialIdx] = useState(0);
-    const [videoReady, setVideoReady] = useState(false);
-    const videoRef = useRef(null);
 
     // Fetch products
     useEffect(() => {
@@ -232,10 +230,10 @@ export default function Home() {
     }, []);
 
     return (
-        <div style={{ background: '#0a0a0a', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+        <div style={{ background: '#000000', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
 
             {/* ══════════════════════════════════════
-                HERO — fullscreen video like LELO
+                HERO — rotating image carousel
             ══════════════════════════════════════ */}
             <section style={{
                 position: 'relative',
@@ -246,25 +244,17 @@ export default function Home() {
                 display: 'flex',
                 alignItems: 'flex-end',
             }}>
-                {/* Background video — clean, no overlay */}
-                <video
-                    ref={videoRef}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    onCanPlay={() => setVideoReady(true)}
+                {/* Background image */}
+                <img
+                    src={homepageBlock5}
+                    alt=""
                     style={{
                         position: 'absolute', inset: 0,
                         width: '100%', height: '100%',
                         objectFit: 'cover',
-                        opacity: videoReady ? 1 : 0,
-                        transition: 'opacity 1.5s ease',
                         zIndex: 0,
                     }}
-                >
-                    <source src={heroVideo} type="video/webm" />
-                </video>
+                />
 
                 {/* Subtle bottom gradient for text readability */}
                 <div style={{
@@ -352,25 +342,16 @@ export default function Home() {
                     </div>
                 </div>
 
-                {/* Scroll indicator */}
-                <div style={{
-                    position: 'absolute', bottom: '28px', right: '60px',
-                    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px',
-                    zIndex: 2,
-                    animation: 'heroFadeUp 1.2s 0.6s both',
-                }}>
-                    <span style={{ fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', writingMode: 'vertical-lr' }}>Scroll</span>
-                    <div style={{ width: '1px', height: '48px', background: 'linear-gradient(to bottom, rgba(255,255,255,0.4), transparent)', animation: 'scrollPulse 2s ease infinite' }} />
-                </div>
+
             </section>
 
             {/* ══════════════════════════════════════
                 TRUST STRIP — WHITE BLOCK
             ══════════════════════════════════════ */}
             <section style={{
-                background: WHITE, color: DARK,
+                background: '#000000', color: '#ffffff',
                 padding: '28px 40px',
-                borderBottom: '1px solid #eee',
+                borderBottom: '1px solid #222',
             }}>
                 <div style={{
                     maxWidth: '1200px', margin: '0 auto',
@@ -380,8 +361,8 @@ export default function Home() {
                     {TRUST.map(({ icon: Icon, label, desc }) => (
                         <div key={label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
                             <Icon size={16} color={ROSE} />
-                            <span style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.04em', color: DARK }}>{label}</span>
-                            <span style={{ fontSize: '11px', color: '#666', lineHeight: 1.4 }}>{desc}</span>
+                            <span style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.04em', color: '#ffffff' }}>{label}</span>
+                            <span style={{ fontSize: '11px', color: '#888', lineHeight: 1.4 }}>{desc}</span>
                         </div>
                     ))}
                 </div>
@@ -390,12 +371,12 @@ export default function Home() {
             {/* ══════════════════════════════════════
                 EDITORIAL — CATEGORY IMAGE GRID — WHITE BLOCK
             ══════════════════════════════════════ */}
-            <section style={{ padding: '80px 40px', background: WHITE, maxWidth: '1400px', margin: '0 auto' }}>
+            <section style={{ padding: '80px 40px', background: '#000000', maxWidth: '1400px', margin: '0 auto' }}>
                 <div style={{ textAlign: 'center', marginBottom: '50px' }}>
                     <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.14em', color: '#888', fontWeight: 600, marginBottom: '10px' }}>
                         Shop by Category
                     </p>
-                    <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 46px)', fontWeight: 700, letterSpacing: '-0.03em', color: DARK, margin: 0 }}>
+                    <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 46px)', fontWeight: 700, letterSpacing: '-0.03em', color: '#ffffff', margin: 0 }}>
                         Find Your Perfect Match
                     </h2>
                 </div>
@@ -415,7 +396,7 @@ export default function Home() {
             {/* ══════════════════════════════════════
                 FEATURED PRODUCTS GRID
             ══════════════════════════════════════ */}
-            <section style={{ padding: '80px 40px', background: '#111' }}>
+            <section style={{ padding: '80px 40px', background: '#000000' }}>
                 <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
                     <div style={{
                         display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
@@ -559,27 +540,27 @@ export default function Home() {
             </section>
 
             {/* ══════════════════════════════════════
-                QUIZ CTA — WHITE BLOCK
+                QUIZ CTA
             ══════════════════════════════════════ */}
             <section style={{
                 padding: '100px 40px',
                 textAlign: 'center',
-                background: WHITE,
+                background: '#000000',
                 position: 'relative',
                 overflow: 'hidden',
             }}>
                 {/* Decorative circles */}
-                <div style={{ position: 'absolute', top: '-80px', right: '5%', width: '400px', height: '400px', borderRadius: '50%', background: `radial-gradient(circle, ${ROSE}20 0%, transparent 70%)`, pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', bottom: '-60px', left: '8%', width: '300px', height: '300px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(107,127,196,0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', top: '-80px', right: '5%', width: '400px', height: '400px', borderRadius: '50%', background: `radial-gradient(circle, ${ROSE}08 0%, transparent 70%)`, pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', bottom: '-60px', left: '8%', width: '300px', height: '300px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
                 <div style={{ position: 'relative', maxWidth: '600px', margin: '0 auto' }}>
                     <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.16em', color: ROSE, fontWeight: 600, marginBottom: '16px' }}>
                         Personalised For You
                     </p>
-                    <h2 style={{ fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 700, letterSpacing: '-0.03em', color: DARK, margin: '0 0 20px', lineHeight: 1.1 }}>
+                    <h2 style={{ fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 700, letterSpacing: '-0.03em', color: '#ffffff', margin: '0 0 20px', lineHeight: 1.1 }}>
                         Not sure where to start?
                     </h2>
-                    <p style={{ fontSize: '17px', color: '#666', margin: '0 0 40px', lineHeight: 1.7, fontWeight: 300 }}>
+                    <p style={{ fontSize: '17px', color: '#888', margin: '0 0 40px', lineHeight: 1.7, fontWeight: 300 }}>
                         Answer 4 quick questions and we'll find the perfect product for your needs — curated just for you.
                     </p>
                     <Link
@@ -587,14 +568,14 @@ export default function Home() {
                         style={{
                             display: 'inline-flex', alignItems: 'center', gap: '10px',
                             padding: '16px 48px',
-                            background: DARK, color: '#fff',
+                            background: '#ffffff', color: '#000000',
                             borderRadius: '4px', textDecoration: 'none',
                             fontSize: '12px', fontWeight: 700,
                             letterSpacing: '0.1em', textTransform: 'uppercase',
                             transition: 'all 0.25s ease',
                         }}
-                        onMouseEnter={e => { e.currentTarget.style.background = ROSE; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = `0 12px 36px ${ROSE}55`; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = DARK; e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
+                        onMouseEnter={e => { e.currentTarget.style.background = '#cccccc'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = `0 12px 36px ${ROSE}55`; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = '#ffffff'; e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
                     >
                         Take the Quiz <FiArrowRight size={14} />
                     </Link>
@@ -615,7 +596,7 @@ export default function Home() {
                 }} className="editorial-grid">
                     {/* Text */}
                     <div style={{
-                        background: WHITE,
+                        background: '#000000',
                         display: 'flex', alignItems: 'center',
                         padding: '80px 72px',
                     }}>
@@ -623,7 +604,7 @@ export default function Home() {
                             <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.16em', color: ROSE, fontWeight: 600, marginBottom: '20px' }}>
                                 Certified Quality
                             </p>
-                            <h2 style={{ fontSize: 'clamp(26px, 3vw, 42px)', fontWeight: 700, letterSpacing: '-0.03em', color: DARK, lineHeight: 1.1, margin: '0 0 24px' }}>
+                            <h2 style={{ fontSize: 'clamp(26px, 3vw, 42px)', fontWeight: 700, letterSpacing: '-0.03em', color: '#ffffff', lineHeight: 1.1, margin: '0 0 24px' }}>
                                 Medical-grade.<br />100% authentic.
                             </h2>
                             <p style={{ fontSize: '16px', color: '#666', lineHeight: 1.75, margin: '0 0 36px', fontWeight: 300 }}>
@@ -634,21 +615,21 @@ export default function Home() {
                                 style={{
                                     display: 'inline-flex', alignItems: 'center', gap: '8px',
                                     padding: '14px 36px',
-                                    background: DARK, color: '#fff',
+                                    background: '#ffffff', color: '#000000',
                                     borderRadius: '4px', textDecoration: 'none',
                                     fontSize: '12px', fontWeight: 700,
                                     letterSpacing: '0.1em', textTransform: 'uppercase',
                                     transition: 'all 0.25s',
                                 }}
-                                onMouseEnter={e => { e.currentTarget.style.background = ROSE; }}
-                                onMouseLeave={e => { e.currentTarget.style.background = DARK; }}
+                                onMouseEnter={e => { e.currentTarget.style.background = '#cccccc'; }}
+                                onMouseLeave={e => { e.currentTarget.style.background = '#ffffff'; }}
                             >
                                 Explore Products <FiArrowRight size={13} />
                             </Link>
                         </div>
                     </div>
                     {/* Image */}
-                    <div style={{ position: 'relative', overflow: 'hidden', background: '#f5f5f5' }}>
+                    <div style={{ position: 'relative', overflow: 'hidden', background: '#000000' }}>
                         <img
                             src={LIFESTYLE_IMGS[1]}
                             alt="Authentic wellness"
@@ -685,7 +666,7 @@ export default function Home() {
                             >
                                 <div style={{ display: 'flex', justifyContent: 'center', gap: '4px', marginBottom: '20px' }}>
                                     {[...Array(t.rating)].map((_, j) => (
-                                        <span key={j} style={{ color: '#f5a623', fontSize: '16px' }}>★</span>
+                                        <span key={j} style={{ color: '#cccccc', fontSize: '16px' }}>★</span>
                                     ))}
                                 </div>
                                 <p style={{ fontSize: 'clamp(17px, 2vw, 22px)', fontWeight: 300, lineHeight: 1.7, color: 'rgba(255,255,255,0.8)', fontStyle: 'italic', margin: '0 0 24px' }}>
@@ -733,10 +714,6 @@ export default function Home() {
                 @keyframes heroFadeUp {
                     from { opacity: 0; transform: translateY(32px); }
                     to   { opacity: 1; transform: translateY(0); }
-                }
-                @keyframes scrollPulse {
-                    0%, 100% { opacity: 0.4; }
-                    50% { opacity: 1; }
                 }
                 @keyframes shimmer {
                     0% { background-position: -200% 0; }
@@ -844,21 +821,21 @@ function NewsletterSection() {
     return (
         <section style={{
             padding: '80px 40px',
-            background: WHITE,
+            background: '#000000',
             textAlign: 'center',
         }}>
             <div style={{ maxWidth: '520px', margin: '0 auto' }}>
                 <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.16em', color: '#888', fontWeight: 600, marginBottom: '14px' }}>
                     Stay in the loop
                 </p>
-                <h2 style={{ fontSize: 'clamp(22px, 3vw, 36px)', fontWeight: 700, letterSpacing: '-0.03em', color: DARK, margin: '0 0 14px' }}>
+                <h2 style={{ fontSize: 'clamp(22px, 3vw, 36px)', fontWeight: 700, letterSpacing: '-0.03em', color: '#ffffff', margin: '0 0 14px' }}>
                     Get exclusive offers
                 </h2>
-                <p style={{ fontSize: '14px', color: '#666', margin: '0 0 32px', lineHeight: 1.6 }}>
+                <p style={{ fontSize: '14px', color: '#888', margin: '0 0 32px', lineHeight: 1.6 }}>
                     Subscribe for new arrivals, discreet wellness tips and members-only discounts.
                 </p>
                 {sent ? (
-                    <div style={{ padding: '16px 32px', background: 'rgba(46,125,50,0.1)', borderRadius: '8px', color: '#2e7d32', fontWeight: 600, fontSize: '14px' }}>
+                    <div style={{ padding: '16px 32px', background: 'rgba(255,255,255,0.1)', borderRadius: '8px', color: '#fff', fontWeight: 600, fontSize: '14px' }}>
                         Thank you! You're on the list.
                     </div>
                 ) : (
@@ -871,18 +848,18 @@ function NewsletterSection() {
                             required
                             style={{
                                 flex: 1, padding: '13px 18px',
-                                border: '1.5px solid #ddd',
+                                border: '1.5px solid #333',
                                 borderRadius: '4px', fontSize: '13px',
-                                color: DARK, outline: 'none',
+                                color: '#ffffff', outline: 'none',
                                 fontFamily: 'inherit',
-                                background: '#fff',
+                                background: '#1a1a1a',
                             }}
                         />
                         <button
                             type="submit"
                             style={{
                                 padding: '13px 24px',
-                                background: DARK, color: '#fff',
+                                background: '#ffffff', color: '#000000',
                                 border: 'none', borderRadius: '4px',
                                 fontSize: '12px', fontWeight: 700,
                                 letterSpacing: '0.08em', textTransform: 'uppercase',
@@ -890,8 +867,8 @@ function NewsletterSection() {
                                 whiteSpace: 'nowrap',
                                 transition: 'background 0.2s',
                             }}
-                            onMouseEnter={e => e.currentTarget.style.background = ROSE}
-                            onMouseLeave={e => e.currentTarget.style.background = DARK}
+                            onMouseEnter={e => e.currentTarget.style.background = '#cccccc'}
+                            onMouseLeave={e => e.currentTarget.style.background = '#ffffff'}
                         >
                             Subscribe
                         </button>

@@ -69,6 +69,10 @@ exports.changePassword = async (req, res, next) => {
 
 exports.deleteAccount = async (req, res, next) => {
   try {
+    if (req.user.role === 'admin') {
+      res.status(403);
+      return next(new Error('Admin accounts cannot be deleted. Contact the system administrator.'));
+    }
     const userId = req.user.id;
     await prisma.quizRecommendation.deleteMany({ where: { response: { userId } } });
     await prisma.quizAnswer.deleteMany({ where: { response: { userId } } });

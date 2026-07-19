@@ -12,7 +12,11 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const stored = localStorage.getItem('blissUser');
         if (stored) {
-            setUser(JSON.parse(stored));
+            try {
+                setUser(JSON.parse(stored));
+            } catch {
+                localStorage.removeItem('blissUser');
+            }
         }
         setLoading(false);
     }, []);
@@ -24,20 +28,24 @@ export const AuthProvider = ({ children }) => {
         return data;
     };
 
-    const register = async (name, email, password, phone) => {
-        const { data } = await authAPI.register({ name, email, password, phone });
-        localStorage.setItem('blissUser', JSON.stringify(data));
-        setUser(data);
-        return data;
-    };
+const register = async (name, email, password, phone, termsAccepted) => {
+    const { data } = await authAPI.register({ name, email, password, phone, termsAccepted });
+    return data;
+};
 
     const logout = () => {
         localStorage.removeItem('blissUser');
         setUser(null);
     };
 
+    const updateUser = (data) => {
+        const updated = { ...user, ...data };
+        localStorage.setItem('blissUser', JSON.stringify(updated));
+        setUser(updated);
+    };
+
     return (
-        <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+        <AuthContext.Provider value={{ user, loading, login, register, logout, updateUser }}>
             {children}
         </AuthContext.Provider>
     );

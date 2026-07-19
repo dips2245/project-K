@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import '../../styles/quiz.css';
 
-const ROSEGOLD = '#c97b6e';
+const ROSEGOLD = '#999999';
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },

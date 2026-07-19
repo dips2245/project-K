@@ -1,11 +1,21 @@
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const { prisma } = require('../config/db');
+
+const isTokenBlacklisted = async (token) => {
+  const hash = crypto.createHash('sha256').update(token).digest('hex');
+  const found = await prisma.blacklistedToken.findUnique({ where: { tokenHash: hash } });
+  return !!found;
+};
 
 const protect = async (req, res, next) => {
   let token;
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
       token = req.headers.authorization.split(' ')[1];
+      if (await isTokenBlacklisted(token)) {
+        return res.status(401).json({ message: 'Token revoked, please log in again' });
+      }
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const user = await prisma.user.findUnique({ where: { id: decoded.id } });
       if (!user) {

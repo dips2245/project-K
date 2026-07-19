@@ -1,7 +1,7 @@
 /* About Page Styles - Dark Theme */
 
 .about-page {
-    background: #0a0a0a;
+    background: #000000;
     color: #ffffff;
     min-height: 100vh;
     overflow-x: hidden;
@@ -14,7 +14,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #0a0a0a 100%);
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #000000 100%);
     overflow: hidden;
 }
 
@@ -272,7 +272,7 @@
 
 .contact-buttons .btn-secondary:hover {
     background: #ffd700;
-    color: #0a0a0a;
+    color: #000000;
 }
 
 /* Team Section */

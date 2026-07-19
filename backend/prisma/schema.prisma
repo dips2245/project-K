@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -49,9 +49,14 @@ model User {
   phone     String?
   addresses Json?    @default("[]")
   refreshToken String? @map("refresh_token")
+  isVerified    Boolean  @default(false) @map("is_verified")
+  verificationToken String? @map("verification_token")
+  termsAccepted Boolean  @default(false) @map("terms_accepted")
+  favorites     Json?    @default("[]")
 
   orders        Order[]
   quizResponses QuizResponse[]
+  auditLogs     AuditLog[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -231,4 +236,37 @@ model QuizRecommendation {
   reason     Json?    @default("[]")
 
   @@map("quiz_recommendations")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  user       User     @relation(fields: [userId], references: [id])
+  action     String
+  resource   String
+  resourceId String?  @map("resource_id")
+  details    String?  @default("{}")
+  ipAddress  String?  @map("ip_address")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("audit_logs")
+}
+
+model Setting {
+  id    String @id @default(uuid())
+  key   String @unique
+  value String
+
+  @@map("settings")
+}
+
+model BlacklistedToken {
+  id        String   @id @default(uuid())
+  tokenHash String   @unique @map("token_hash")
+  expiresAt DateTime @map("expires_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("blacklisted_tokens")
 }

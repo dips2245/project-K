@@ -51,10 +51,10 @@
         "sortPriceHigh": "मूल्य: महँगो पहिले",
         "filterPrice": "मूल्य सीमा",
         "priceAll": "कुनै पनि मूल्य",
-        "priceUnder": "$२५ भन्दा कम",
-        "priceMid": "$२५ – $५०",
-        "priceHigh": "$५० – $१००",
-        "priceLuxury": "$१००+",
+        "priceUnder": "Rs. ५,००० भन्दा कम",
+        "priceMid": "Rs. ५,००० – Rs. १५,०००",
+        "priceHigh": "Rs. १५,००० – Rs. ३०,०००",
+        "priceLuxury": "Rs. ३०,०००+",
         "noResults": "कुनै आनन्द फेला परेन",
         "noResultsHint": "फिल्टर समायोजन गर्नुहोस् वा अरू केही खोज्नुहोस्",
         "clearFilters": "सबै हटाउनुहोस्",
@@ -222,6 +222,6 @@
         "filter": "फिल्टर",
         "sort": "क्रमबद्ध",
         "noResults": "कुनै नतिजा फेला परेन",
-        "currency": "$"
+        "currency": "Rs."
     }
 }

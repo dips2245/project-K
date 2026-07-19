@@ -141,7 +141,7 @@ const Shop = () => {
     return (
         <div style={{
             minHeight: '100vh',
-            background: '#0a0a0a',
+            background: '#000000',
             fontFamily: "'Plus Jakarta Sans', 'PolySans', sans-serif",
         }}>
             {/* ── Page Header ── */}
@@ -181,7 +181,7 @@ const Shop = () => {
                             borderRadius: '8px', padding: '0 16px',
                             transition: 'border-color 0.2s',
                         }}
-                            onMouseEnter={e => e.currentTarget.style.borderColor = '#d4736e'}
+                            onMouseEnter={e => e.currentTarget.style.borderColor = '#888888'}
                             onMouseLeave={e => e.currentTarget.style.borderColor = '#333'}
                         >
                             <FiSearch size={16} color="#666" style={{ flexShrink: 0 }} />
@@ -276,7 +276,7 @@ const Shop = () => {
                                             type="submit"
                                             style={{
                                                 background: 'none', border: 'none', cursor: 'pointer',
-                                                fontSize: '12px', color: '#d4736e', fontWeight: 600,
+                                                fontSize: '12px', color: '#888888', fontWeight: 600,
                                                 fontFamily: 'inherit',
                                             }}
                                             onClick={() => handleSearchSubmit(new Event('submit'))}
@@ -291,14 +291,14 @@ const Shop = () => {
                     <button
                         type="submit"
                         style={{
-                            padding: '12px 24px', background: '#d4736e', color: '#fff',
+                            padding: '12px 24px', background: '#888888', color: '#fff',
                             border: 'none', borderRadius: '8px', cursor: 'pointer',
                             fontSize: '12.5px', fontWeight: 600, letterSpacing: '0.04em',
                             textTransform: 'uppercase', fontFamily: 'inherit',
                             whiteSpace: 'nowrap', transition: 'background 0.2s',
                         }}
                         onMouseEnter={e => e.currentTarget.style.background = '#c05f5a'}
-                        onMouseLeave={e => e.currentTarget.style.background = '#d4736e'}
+                        onMouseLeave={e => e.currentTarget.style.background = '#888888'}
                     >
                         {t('common.search')}
                     </button>
@@ -316,8 +316,8 @@ const Shop = () => {
                                 display: 'flex', alignItems: 'center', gap: '7px',
                                 padding: '9px 18px',
                                 border: '1.5px solid #333',
-                                borderRadius: '6px', background: filterOpen ? '#fff' : '#111',
-                                color: filterOpen ? '#000' : '#e0e0e0',
+                                borderRadius: '6px', background: filterOpen ? '#000000' : '#111',
+                                color: filterOpen ? '#fff' : '#e0e0e0',
                                 fontSize: '12.5px', fontWeight: 600,
                                 letterSpacing: '0.04em', textTransform: 'uppercase',
                                 cursor: 'pointer', fontFamily: 'inherit',
@@ -363,7 +363,7 @@ const Shop = () => {
                         {(currentCategory || currentSearch || currentSort || currentPrice) && (
                             <button onClick={clearAll} style={{
                                 background: 'none', border: 'none', cursor: 'pointer',
-                                fontSize: '12px', color: '#d4736e', fontWeight: 600,
+                                fontSize: '12px', color: '#888888', fontWeight: 600,
                                 letterSpacing: '0.04em', textTransform: 'uppercase',
                                 textDecoration: 'underline', fontFamily: 'inherit',
                             }}>
@@ -384,7 +384,7 @@ const Shop = () => {
                                 cursor: 'pointer', fontFamily: 'inherit',
                                 transition: 'border-color 0.2s',
                             }}
-                            onMouseEnter={e => e.currentTarget.style.borderColor = '#d4736e'}
+                            onMouseEnter={e => e.currentTarget.style.borderColor = '#888888'}
                             onMouseLeave={e => e.currentTarget.style.borderColor = '#333'}
                         >
                             <span style={{ color: '#9a9a9a', fontSize: '11px', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
@@ -411,7 +411,7 @@ const Shop = () => {
                                             background: currentSort === opt.value ? '#222' : 'none',
                                             border: 'none', cursor: 'pointer',
                                             fontSize: '13px',
-                                            color: currentSort === opt.value ? '#d4736e' : '#e0e0e0',
+                                            color: currentSort === opt.value ? '#888888' : '#e0e0e0',
                                             fontWeight: currentSort === opt.value ? 600 : 400,
                                             borderRadius: '5px', fontFamily: 'inherit',
                                             transition: 'background 0.12s',
@@ -449,8 +449,8 @@ const Shop = () => {
                                         padding: '7px 16px', borderRadius: '20px',
                                         border: '1.5px solid',
                                         borderColor: !currentCategory ? '#fff' : '#333',
-                                        background: !currentCategory ? '#fff' : '#111',
-                                        color: !currentCategory ? '#000' : '#ccc',
+                                        background: !currentCategory ? '#000000' : '#111',
+                                        color: !currentCategory ? '#fff' : '#ccc',
                                         fontSize: '12.5px', fontWeight: 500,
                                         cursor: 'pointer', fontFamily: 'inherit',
                                         transition: 'all 0.2s',
@@ -465,9 +465,9 @@ const Shop = () => {
                                         style={{
                                             padding: '7px 16px', borderRadius: '20px',
                                             border: '1.5px solid',
-                                            borderColor: currentCategory === cat._id ? '#d4736e' : '#333',
-                                            background: currentCategory === cat._id ? '#d4736e' : '#111',
-                                            color: currentCategory === cat._id ? '#fff' : '#ccc',
+                                            borderColor: currentCategory === cat._id ? '#ffffff' : '#333',
+                                            background: currentCategory === cat._id ? '#ffffff' : '#111',
+                                            color: currentCategory === cat._id ? '#000' : '#ccc',
                                             fontSize: '12.5px', fontWeight: 500,
                                             cursor: 'pointer', fontFamily: 'inherit',
                                             transition: 'all 0.2s',
@@ -492,8 +492,8 @@ const Shop = () => {
                                         style={{
                                             padding: '7px 16px', borderRadius: '20px',
                                             border: '1.5px solid',
-                                            borderColor: currentPrice === range.value ? '#d4736e' : '#333',
-                                            background: currentPrice === range.value ? '#d4736e' : '#111',
+                                            borderColor: currentPrice === range.value ? '#888888' : '#333',
+                                            background: currentPrice === range.value ? '#888888' : '#111',
                                             color: currentPrice === range.value ? '#fff' : '#ccc',
                                             fontSize: '12.5px', fontWeight: 500,
                                             cursor: 'pointer', fontFamily: 'inherit',
@@ -538,7 +538,7 @@ const Shop = () => {
                             {t('shop.noResultsHint')}
                         </p>
                         <button onClick={clearAll} style={{
-                            padding: '10px 24px', background: '#fff', color: '#000',
+                            padding: '10px 24px', background: '#000000', color: '#fff',
                             border: 'none', borderRadius: '6px', cursor: 'pointer',
                             fontSize: '12.5px', fontWeight: 600, letterSpacing: '0.06em',
                             textTransform: 'uppercase', fontFamily: 'inherit',
@@ -572,13 +572,13 @@ const Shop = () => {
                                             width: '38px', height: '38px',
                                             borderRadius: '6px', border: '1.5px solid',
                                             borderColor: currentPage === page ? '#fff' : '#333',
-                                            background: currentPage === page ? '#fff' : '#111',
-                                            color: currentPage === page ? '#000' : '#e0e0e0',
+                                            background: currentPage === page ? '#000000' : '#111',
+                                            color: currentPage === page ? '#fff' : '#e0e0e0',
                                             fontSize: '13px', fontWeight: 500,
                                             cursor: 'pointer', fontFamily: 'inherit',
                                             transition: 'all 0.2s',
                                         }}
-                                        onMouseEnter={e => { if (currentPage !== page) { e.currentTarget.style.borderColor = '#d4736e'; e.currentTarget.style.color = '#d4736e'; } }}
+                                        onMouseEnter={e => { if (currentPage !== page) { e.currentTarget.style.borderColor = '#888888'; e.currentTarget.style.color = '#888888'; } }}
                                         onMouseLeave={e => { if (currentPage !== page) { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.color = '#e0e0e0'; } }}
                                     >
                                         {page}

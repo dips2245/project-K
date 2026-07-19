@@ -51,10 +51,10 @@
         "sortPriceHigh": "Price: Luxury First",
         "filterPrice": "Price Range",
         "priceAll": "Any Price",
-        "priceUnder": "Under $25",
-        "priceMid": "$25 – $50",
-        "priceHigh": "$50 – $100",
-        "priceLuxury": "$100+",
+        "priceUnder": "Under Rs. 5,000",
+        "priceMid": "Rs. 5,000 – Rs. 15,000",
+        "priceHigh": "Rs. 15,000 – Rs. 30,000",
+        "priceLuxury": "Rs. 30,000+",
         "noResults": "No pleasure found",
         "noResultsHint": "Try adjusting your filters or search for something spicier",
         "clearFilters": "Clear All",
@@ -222,6 +222,6 @@
         "filter": "Filter",
         "sort": "Sort",
         "noResults": "No results found",
-        "currency": "$"
+        "currency": "Rs."
     }
 }

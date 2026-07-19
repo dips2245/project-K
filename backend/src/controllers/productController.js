@@ -17,6 +17,8 @@ exports.getProducts = async (req, res, next) => {
       where.OR = [
         { nameEn: { contains: search } },
         { nameNe: { contains: search } },
+        { descriptionEn: { contains: search } },
+        { descriptionNe: { contains: search } },
       ];
     }
 

@@ -17,6 +17,7 @@ const registerRules = [
   body('email').trim().isEmail().withMessage('Valid email is required'),
   body('password').matches(PASSWORD_REGEX).withMessage(PASSWORD_MESSAGE),
   body('phone').optional().trim(),
+  body('termsAccepted').isBoolean().withMessage('You must accept the terms and conditions'),
   handleErrors,
 ];
 

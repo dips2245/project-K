@@ -1,9 +1,10 @@
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { authAPI } from '../../hooks/api';
 import {
     FiGrid, FiPackage, FiList, FiShoppingBag,
     FiLogOut, FiMenu, FiX, FiExternalLink,
-    FiChevronRight
+    FiChevronRight, FiAlertTriangle, FiUsers, FiSettings
 } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 
@@ -12,23 +13,62 @@ const navLinks = [
     { to: '/admin/products', icon: FiPackage, label: 'Products' },
     { to: '/admin/categories', icon: FiList, label: 'Categories' },
     { to: '/admin/orders', icon: FiShoppingBag, label: 'Orders' },
+    { to: '/admin/users', icon: FiUsers, label: 'Users' },
+    { to: '/admin/settings', icon: FiSettings, label: 'Settings' },
 ];
 
 const AdminLayout = () => {
-    const { user, logout } = useAuth();
+    const { user, loading, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [serverVerified, setServerVerified] = useState(null);
 
     useEffect(() => {
-        if (!user || user.role !== 'admin') {
+        if (!loading && (!user || user.role !== 'admin')) {
             navigate('/login?redirect=/admin');
         }
-    }, [user, navigate]);
+    }, [user, loading, navigate]);
 
-    if (!user || user.role !== 'admin') {
+    useEffect(() => {
+        if (user && user.role === 'admin') {
+            authAPI.getMe()
+                .then(({ data }) => {
+                    if (data.role === 'admin') {
+                        setServerVerified(true);
+                    } else {
+                        setServerVerified(false);
+                        logout();
+                        navigate('/login?redirect=/admin');
+                    }
+                })
+                .catch(() => {
+                    setServerVerified(false);
+                    logout();
+                    navigate('/login?redirect=/admin');
+                });
+        }
+    }, []);
+
+    if (loading || serverVerified === null) {
+        return (
+            <div className="min-h-screen bg-bliss-bg flex items-center justify-center">
+                <div className="animate-spin w-8 h-8 border-2 border-bliss-rose border-t-transparent rounded-full" />
+            </div>
+        );
+    }
+
+    if (!user || user.role !== 'admin' || !serverVerified) {
         return null;
     }
+
+    const handleLogout = async () => {
+        try {
+            await authAPI.logout();
+        } catch { }
+        logout();
+        navigate('/');
+    };
 
     const isActive = (link) =>
         link.exact
@@ -61,7 +101,7 @@ const AdminLayout = () => {
                             b
                         </div>
                         <div>
-                            <span className="text-sm font-semibold text-bliss-dark tracking-tight">bliss</span>
+                            <span className="text-sm font-semibold text-bliss-dark tracking-[0.12em] lowercase">bliss</span>
                             <span className="text-[10px] text-bliss-muted block leading-tight -mt-0.5">Admin Panel</span>
                         </div>
                     </Link>
@@ -109,7 +149,7 @@ const AdminLayout = () => {
                         <span>View Site</span>
                     </Link>
                     <button
-                        onClick={() => { logout(); navigate('/'); }}
+                        onClick={handleLogout}
                         className="flex items-center gap-3 px-3.5 py-2.5 text-sm text-bliss-muted hover:text-red-400 rounded-xl hover:bg-bliss-cream transition w-full"
                     >
                         <FiLogOut size={14} />

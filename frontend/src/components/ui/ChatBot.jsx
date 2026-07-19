@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { FiMessageSquare, FiX, FiSend, FiChevronRight } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
-
-const WA_NUMBER = '9779800000000';
+import { useWhatsApp } from '../../hooks/useWhatsApp';
 
 const QUICK_REPLIES = [
     { label: '📦 Delivery info', text: 'How long does delivery take?' },
@@ -66,8 +65,8 @@ const getBotResponse = (msg) => {
     return { text: null, whatsapp: true };
 };
 
-const openWhatsApp = (msg = 'Hi! I need help with Bliss Nepal.') => {
-    window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+const openWhatsApp = (number, msg = 'Hi! I need help with Bliss Nepal.') => {
+    window.open(`https://wa.me/${number}?text=${encodeURIComponent(msg)}`, '_blank');
 };
 
 const ChatBot = () => {
@@ -77,6 +76,7 @@ const ChatBot = () => {
     const [typing, setTyping] = useState(false);
     const chatRef = useRef(null);
     const inputRef = useRef(null);
+    const { number } = useWhatsApp();
 
     useEffect(() => {
         if (open && messages.length === 0) {
@@ -108,7 +108,7 @@ const ChatBot = () => {
         addMessage('user', userMsg);
 
         if (userMsg === 'WHATSAPP') {
-            openWhatsApp();
+            openWhatsApp(number);
             return;
         }
 
@@ -118,7 +118,7 @@ const ChatBot = () => {
             const response = getBotResponse(userMsg);
             if (response.whatsapp) {
                 addMessage('bot', '💬 Let me connect you directly with our team on WhatsApp for instant help!');
-                setTimeout(() => openWhatsApp(`Hi! I have a question: ${userMsg === 'WHATSAPP' ? 'I need help' : userMsg}`), 600);
+                setTimeout(() => openWhatsApp(number, `Hi! I have a question: ${userMsg === 'WHATSAPP' ? 'I need help' : userMsg}`), 600);
             } else {
                 addMessage('bot', response.text);
             }
@@ -180,9 +180,9 @@ const ChatBot = () => {
                             </div>
                         </div>
                         <button
-                            onClick={() => openWhatsApp()}
+                            onClick={() => openWhatsApp(number)}
                             style={{
-                                background: '#25D366', border: 'none', borderRadius: '8px',
+                                background: '#1a1a1a', border: 'none', borderRadius: '8px',
                                 padding: '6px 10px', cursor: 'pointer',
                                 display: 'flex', alignItems: 'center', gap: '5px',
                                 fontSize: '11px', fontWeight: 600, color: '#fff',
@@ -214,7 +214,7 @@ const ChatBot = () => {
                                     borderRadius: msg.from === 'user' ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
                                     fontSize: '13px',
                                     lineHeight: '1.5',
-                                    backgroundColor: msg.from === 'user' ? '#c97b6e' : '#222',
+                                    backgroundColor: msg.from === 'user' ? '#999999' : '#222',
                                     color: msg.from === 'user' ? '#ffffff' : '#e0e0e0',
                                     border: msg.from === 'bot' ? '1px solid #333' : 'none',
                                     boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
@@ -233,7 +233,7 @@ const ChatBot = () => {
                                     {[0, 1, 2].map(i => (
                                         <span key={i} style={{
                                             width: '6px', height: '6px', borderRadius: '50%',
-                                            background: '#d4736e',
+                                            background: '#888888',
                                             animation: `typingDot 1.2s ${i * 0.2}s infinite`,
                                             display: 'inline-block',
                                         }} />
@@ -268,7 +268,7 @@ const ChatBot = () => {
                                     fontFamily: 'inherit',
                                     transition: 'all 0.15s',
                                 }}
-                                onMouseEnter={e => { e.currentTarget.style.background = '#d4736e'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = '#d4736e'; }}
+                                onMouseEnter={e => { e.currentTarget.style.background = '#888888'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = '#888888'; }}
                                 onMouseLeave={e => { e.currentTarget.style.background = '#2a2a2a'; e.currentTarget.style.color = '#ccc'; e.currentTarget.style.borderColor = '#333'; }}
                             >
                                 {qr.label}
@@ -307,14 +307,14 @@ const ChatBot = () => {
                             onClick={() => handleSend()}
                             style={{
                                 width: '38px', height: '38px',
-                                background: '#c97b6e',
+                                background: '#999999',
                                 border: 'none', borderRadius: '50%',
                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                                 cursor: 'pointer', flexShrink: 0,
                                 transition: 'background 0.2s',
                             }}
-                            onMouseEnter={e => e.currentTarget.style.background = '#d4736e'}
-                            onMouseLeave={e => e.currentTarget.style.background = '#c97b6e'}
+                            onMouseEnter={e => e.currentTarget.style.background = '#888888'}
+                            onMouseLeave={e => e.currentTarget.style.background = '#999999'}
                         >
                             <FiSend size={14} color="#fff" />
                         </button>
@@ -328,19 +328,19 @@ const ChatBot = () => {
                         textAlign: 'center',
                     }}>
                         <button
-                            onClick={() => openWhatsApp()}
+                            onClick={() => openWhatsApp(number)}
                             style={{
                                 display: 'inline-flex', alignItems: 'center', gap: '6px',
                                 padding: '8px 18px',
-                                background: '#25D366',
+                                background: '#1a1a1a',
                                 border: 'none', borderRadius: '24px',
                                 color: '#fff', fontSize: '12px', fontWeight: 600,
                                 cursor: 'pointer', fontFamily: 'inherit',
                                 transition: 'background 0.2s, transform 0.15s',
-                                boxShadow: '0 4px 14px rgba(37,211,102,0.3)',
+                                boxShadow: '0 4px 14px rgba(0,0,0,0.4)',
                             }}
-                            onMouseEnter={e => { e.currentTarget.style.background = '#20ba5a'; e.currentTarget.style.transform = 'scale(1.03)'; }}
-                            onMouseLeave={e => { e.currentTarget.style.background = '#25D366'; e.currentTarget.style.transform = 'scale(1)'; }}
+                            onMouseEnter={e => { e.currentTarget.style.background = '#333'; e.currentTarget.style.transform = 'scale(1.03)'; }}
+                            onMouseLeave={e => { e.currentTarget.style.background = '#1a1a1a'; e.currentTarget.style.transform = 'scale(1)'; }}
                         >
                             <FaWhatsapp size={14} />
                             Chat on WhatsApp for instant help
@@ -358,7 +358,7 @@ const ChatBot = () => {
                     left: '24px',
                     zIndex: 1001,
                     width: '56px', height: '56px',
-                    backgroundColor: open ? '#d4736e' : '#1a1a1a',
+                    backgroundColor: open ? '#888888' : '#1a1a1a',
                     borderRadius: '50%',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     boxShadow: open ? '0 4px 20px rgba(212,115,110,0.4)' : '0 4px 20px rgba(0,0,0,0.2)',

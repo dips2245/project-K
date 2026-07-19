@@ -129,7 +129,7 @@ exports.whatsappMessage = async (req, res, next) => {
     items.forEach((item) => {
       message += `• ${item.name} x${item.quantity} - Rs. ${item.price * item.quantity}\n`;
     });
-    message += `\n*Total: Rs. ${totalAmount}*\n\n*Shipping Address:*\n${shippingAddress.fullName}\n${shippingAddress.address}\n${shippingAddress.city}, ${shippingAddress.district}\nPhone: ${shippingAddress.phone}\n\nPayment: Cash on Delivery`;
+    message += `\n*Total: Rs. ${totalAmount}*\n\n*Shipping Address:*\n${shippingAddress.fullName}\n${shippingAddress.address}\n${shippingAddress.district}\nPhone: ${shippingAddress.phone}\n\nPayment: Cash on Delivery`;
     const whatsappNumber = process.env.WHATSAPP_NUMBER || '9779800000000';
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;

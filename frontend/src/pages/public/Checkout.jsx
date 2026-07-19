@@ -3,12 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { FiCheck, FiArrowRight, FiArrowLeft, FiShield, FiLock, FiPackage, FiInfo } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
-
-const WA_NUMBER = '9779800000000'; // Update to real number
+import { useWhatsApp } from '../../hooks/useWhatsApp';
 
 const DARK = '#0f0f0f';
 const LIGHT = '#f5f5f5';
-const ROSE = '#c97b6e';
+const ROSE = '#999999';
 
 const inputStyle = {
     width: '100%',
@@ -43,6 +42,7 @@ const STEPS = [
 export default function Checkout() {
     const navigate = useNavigate();
     const { items, totalPrice, clearCart } = useCart();
+    const { number } = useWhatsApp();
     const [step, setStep] = useState(1);
     const [submitted, setSubmitted] = useState(false);
     const [form, setForm] = useState({
@@ -50,7 +50,6 @@ export default function Checkout() {
         phone: '',
         email: '',
         address: '',
-        city: '',
         district: '',
         notes: '',
         paymentMethod: 'cod',
@@ -104,7 +103,6 @@ Name: ${form.fullName}
 Phone: ${form.phone}
 Email: ${form.email || 'N/A'}
 Address: ${form.address}
-City: ${form.city}
 District: ${form.district}
 Notes: ${form.notes || 'None'}
 
@@ -114,7 +112,7 @@ Please confirm this order. Thank you! 🙏`;
 
         // Open WhatsApp
         window.open(
-            `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`,
+            `https://wa.me/${number}?text=${encodeURIComponent(message)}`,
             '_blank'
         );
 
@@ -131,7 +129,7 @@ Please confirm this order. Thank you! 🙏`;
 
     return (
         <div style={{
-            background: '#0a0a0a',
+            background: '#000000',
             minHeight: '90vh',
             padding: '48px 0 96px',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -158,12 +156,12 @@ Please confirm this order. Thank you! 🙏`;
                             </div>
                             <span style={{
                                 fontSize: '13px', fontWeight: step >= s.n ? 600 : 400,
-                                color: step >= s.n ? DARK : '#9a9a9a',
+                                color: step >= s.n ? '#fff' : '#9a9a9a',
                             }}>{s.label}</span>
                             {idx < STEPS.length - 1 && (
                                 <div style={{
                                     width: '48px', height: '2px', margin: '0 4px',
-                                    background: step > s.n ? DARK : '#333',
+                                    background: step > s.n ? '#fff' : '#333',
                                     transition: 'background 0.3s',
                                 }} />
                             )}
@@ -235,25 +233,14 @@ Please confirm this order. Thank you! 🙏`;
                                             onBlur={e => e.target.style.borderColor = '#333'}
                                         />
                                     </div>
-
-                                    {/* City + District */}
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }} className="grid-2col">
-                                        <div>
-                                            <label style={labelStyle}>City *</label>
-                                            <input name="city" type="text" value={form.city} onChange={handleChange}
-                                                required placeholder="e.g. Kathmandu" style={inputStyle}
-                                                onFocus={e => e.target.style.borderColor = ROSE}
-                                                onBlur={e => e.target.style.borderColor = '#333'}
-                                            />
-                                        </div>
-                                        <div>
-                                            <label style={labelStyle}>District *</label>
-                                            <input name="district" type="text" value={form.district} onChange={handleChange}
-                                                required placeholder="e.g. Lalitpur" style={inputStyle}
-                                                onFocus={e => e.target.style.borderColor = ROSE}
-                                                onBlur={e => e.target.style.borderColor = '#333'}
-                                            />
-                                        </div>
+                                    {/* District */}
+                                    <div>
+                                        <label style={labelStyle}>District *</label>
+                                        <input name="district" type="text" value={form.district} onChange={handleChange}
+                                            required placeholder="e.g. Lalitpur" style={inputStyle}
+                                            onFocus={e => e.target.style.borderColor = ROSE}
+                                            onBlur={e => e.target.style.borderColor = '#333'}
+                                        />
                                     </div>
 
                                     {/* Notes */}
@@ -318,7 +305,7 @@ Please confirm this order. Thank you! 🙏`;
                                         }}>Edit</button>
                                     </div>
                                     <p style={{ margin: '0 0 4px', fontSize: '15px', fontWeight: 600, color: '#e0e0e0' }}>{form.fullName}</p>
-                                    <p style={{ margin: '0 0 4px', fontSize: '13px', color: '#aaa' }}>{form.address}, {form.city}, {form.district}</p>
+                                    <p style={{ margin: '0 0 4px', fontSize: '13px', color: '#aaa' }}>{form.address}, {form.district}</p>
                                     <p style={{ margin: 0, fontSize: '13px', color: '#aaa' }}>📞 {form.phone}</p>
                                 </div>
 
@@ -357,7 +344,7 @@ Please confirm this order. Thank you! 🙏`;
                                     border: '1px solid #1a4d2e', borderRadius: '10px',
                                     display: 'flex', gap: '10px', marginBottom: '28px',
                                 }}>
-                                    <FaWhatsapp size={18} color="#25D366" style={{ flexShrink: 0, marginTop: '1px' }} />
+                                    <FaWhatsapp size={18} color="#1a1a1a" style={{ flexShrink: 0, marginTop: '1px' }} />
                                     <p style={{ margin: 0, fontSize: '12.5px', color: '#68d391', lineHeight: 1.55 }}>
                                         <strong>Placing this order will open WhatsApp</strong> with your complete order details pre-filled. Simply send the message to confirm with our team instantly.
                                     </p>
@@ -380,7 +367,7 @@ Please confirm this order. Thank you! 🙏`;
                                     </button>
                                     <button type="submit" style={{
                                         flex: 2.5, padding: '14px',
-                                        background: '#25D366', color: '#fff',
+                                        background: '#666666', color: '#fff',
                                         border: 'none', borderRadius: '8px',
                                         fontSize: '13px', fontWeight: 700,
                                         letterSpacing: '0.06em', textTransform: 'uppercase',
@@ -389,8 +376,8 @@ Please confirm this order. Thank you! 🙏`;
                                         transition: 'background 0.2s, transform 0.15s',
                                         boxShadow: '0 4px 16px rgba(37,211,102,0.3)',
                                     }}
-                                        onMouseEnter={e => { e.currentTarget.style.background = '#20ba5a'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-                                        onMouseLeave={e => { e.currentTarget.style.background = '#25D366'; e.currentTarget.style.transform = 'none'; }}
+                                        onMouseEnter={e => { e.currentTarget.style.background = '#555555'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                                        onMouseLeave={e => { e.currentTarget.style.background = '#666666'; e.currentTarget.style.transform = 'none'; }}
                                     >
                                         <FaWhatsapp size={16} /> Place Order via WhatsApp
                                     </button>
@@ -408,7 +395,7 @@ Please confirm this order. Thank you! 🙏`;
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                                     margin: '0 auto 28px', animation: 'popIn 0.4s cubic-bezier(0.16,1,0.3,1)',
                                 }}>
-                                    <FiCheck size={38} color="#25D366" strokeWidth={2.5} />
+                                    <FiCheck size={38} color="#666666" strokeWidth={2.5} />
                                 </div>
 
                                 <h2 style={{ fontSize: '28px', fontWeight: 700, color: LIGHT, margin: '0 0 12px', letterSpacing: '-0.03em' }}>
@@ -445,20 +432,20 @@ Please confirm this order. Thank you! 🙏`;
 
                                 <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
                                     <a
-                                        href={`https://wa.me/${WA_NUMBER}`}
+                                        href={`https://wa.me/${number}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         style={{
                                             display: 'inline-flex', alignItems: 'center', gap: '8px',
                                             padding: '13px 28px',
-                                            background: '#25D366', color: '#fff',
+                                            background: '#666666', color: '#fff',
                                             borderRadius: '8px', textDecoration: 'none',
                                             fontSize: '13px', fontWeight: 700,
                                             boxShadow: '0 4px 16px rgba(37,211,102,0.3)',
                                             transition: 'background 0.2s',
                                         }}
-                                        onMouseEnter={e => e.currentTarget.style.background = '#20ba5a'}
-                                        onMouseLeave={e => e.currentTarget.style.background = '#25D366'}
+                                        onMouseEnter={e => e.currentTarget.style.background = '#555555'}
+                                        onMouseLeave={e => e.currentTarget.style.background = '#666666'}
                                     >
                                         <FaWhatsapp size={16} /> Open WhatsApp Chat
                                     </a>

@@ -6,13 +6,23 @@ const { connectDB, prisma } = require('./src/config/db');
 const { notFound, errorHandler } = require('./src/middleware/errorHandler');
 const { apiLimiter } = require('./src/middleware/rateLimiter');
 
+// Validate critical env vars
+if (!process.env.JWT_SECRET || process.env.JWT_SECRET === 'bliss_nepal_dev_secret_key_2026') {
+  console.warn('\x1b[33m⚠ WARNING: Using default/dev JWT_SECRET. Set a strong secret in production.\x1b[0m');
+}
+if (process.env.NODE_ENV === 'production' && process.env.JWT_SECRET === 'bliss_nepal_dev_secret_key_2026') {
+  console.error('\x1b[31m✖ FATAL: Cannot use default JWT_SECRET in production. Set a strong secret.\x1b[0m');
+  process.exit(1);
+}
+
 const app = express();
 
 // Connect to database
 connectDB();
 
 // Middleware
-app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:3000', credentials: true }));
+const corsOrigins = (process.env.CORS_ORIGINS || process.env.CLIENT_URL || 'http://localhost:3000').split(',');
+app.use(cors({ origin: corsOrigins, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api', apiLimiter);
@@ -27,6 +37,7 @@ app.use('/api/categories', require('./src/routes/categoryRoutes'));
 app.use('/api/orders', require('./src/routes/orderRoutes'));
 app.use('/api/quiz', require('./src/routes/quizRoutes'));
 app.use('/api/users', require('./src/routes/userRoutes'));
+app.use('/api/admin', require('./src/routes/adminRoutes'));
 
 // Health check
 app.get('/api/health', (req, res) => {

@@ -26,7 +26,7 @@ const AgeVerificationModal = () => {
                     >
                         {!denied ? (
                             <>
-                                <span className="text-4xl font-semibold text-white lowercase">bliss</span>
+                                <span className="text-4xl font-semibold text-white lowercase tracking-[0.15em]">bliss</span>
                                 <div className="w-12 h-0.5 bg-bliss-rose mx-auto my-6 rounded-full" />
                                 <h3 className="text-xl font-semibold text-white mb-3">{t('ageVerification.title')}</h3>
                                 <p className="text-bliss-muted mb-8 leading-relaxed text-[15px]">{t('ageVerification.message')}</p>

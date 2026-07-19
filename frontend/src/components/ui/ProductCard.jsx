@@ -15,8 +15,8 @@ const StarRating = ({ rating }) => {
         <div style={{ display: 'flex', gap: '2px' }}>
             {[1, 2, 3, 4, 5].map(i => {
                 let fill = '#333';
-                if (i <= Math.floor(r)) fill = '#f5a623';
-                else if (i - 0.5 <= r) fill = '#f5a623';
+                if (i <= Math.floor(r)) fill = '#cccccc';
+                else if (i - 0.5 <= r) fill = '#cccccc';
                 return (
                     <svg key={i} width="10" height="10" viewBox="0 0 10 10">
                         <polygon
@@ -95,7 +95,7 @@ const ProductCard = ({ product, cardIndex = 0 }) => {
                     {badgeText && (
                         <span style={{
                             position: 'absolute', top: '10px', left: '10px',
-                            background: isNew ? '#0c0c0c' : '#c97b6e', color: '#fff',
+                            background: isNew ? '#0c0c0c' : '#999999', color: '#fff',
                             fontSize: '9px', fontWeight: 700,
                             padding: '3px 8px', borderRadius: '20px',
                             letterSpacing: '0.04em', textTransform: 'uppercase',
@@ -111,7 +111,7 @@ const ProductCard = ({ product, cardIndex = 0 }) => {
                             position: 'absolute',
                             top: badgeText ? '36px' : '10px',
                             left: '10px',
-                            background: '#d4736e', color: '#fff',
+                            background: '#888888', color: '#fff',
                             fontSize: '9.5px', fontWeight: 700,
                             padding: '3px 8px', borderRadius: '20px',
                             letterSpacing: '0.04em',
@@ -139,8 +139,8 @@ const ProductCard = ({ product, cardIndex = 0 }) => {
                     >
                         <FiHeart
                             size={14}
-                            fill={wishlisted ? '#d4736e' : 'none'}
-                            color={wishlisted ? '#d4736e' : '#555'}
+                            fill={wishlisted ? '#888888' : 'none'}
+                            color={wishlisted ? '#888888' : '#555'}
                         />
                     </button>
 
@@ -163,7 +163,7 @@ const ProductCard = ({ product, cardIndex = 0 }) => {
                                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
                                 transition: 'background 0.2s',
                             }}
-                            onMouseEnter={e => e.currentTarget.style.background = '#d4736e'}
+                            onMouseEnter={e => e.currentTarget.style.background = '#888888'}
                             onMouseLeave={e => e.currentTarget.style.background = '#0c0c0c'}
                         >
                             <FiShoppingBag size={13} />
@@ -179,7 +179,7 @@ const ProductCard = ({ product, cardIndex = 0 }) => {
                     <h3 style={{
                         margin: '0 0 5px',
                         fontSize: '13.5px', fontWeight: 500,
-                        color: hovered ? '#d4736e' : '#e0e0e0',
+                        color: hovered ? '#888888' : '#e0e0e0',
                         transition: 'color 0.2s',
                         lineHeight: 1.35,
                         fontFamily: 'inherit',

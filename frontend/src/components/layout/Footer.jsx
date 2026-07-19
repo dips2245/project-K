@@ -106,8 +106,8 @@ const Footer = () => {
                                         transition: 'all 0.2s',
                                     }}
                                     onMouseEnter={e => {
-                                        e.currentTarget.style.borderColor = '#d4736e';
-                                        e.currentTarget.style.color = '#d4736e';
+                                        e.currentTarget.style.borderColor = '#888888';
+                                        e.currentTarget.style.color = '#888888';
                                         e.currentTarget.style.background = 'rgba(212,115,110,0.08)';
                                     }}
                                     onMouseLeave={e => {
@@ -159,7 +159,7 @@ const Footer = () => {
                             © {new Date().getFullYear()} {t('site.name')}. {t('footer.rights')}
                         </p>
                         <span style={{
-                            fontSize: '10px', color: '#d4736e',
+                            fontSize: '10px', color: '#888888',
                             display: 'flex', alignItems: 'center', gap: '4px',
                             fontWeight: 600, letterSpacing: '0.04em',
                         }}>
