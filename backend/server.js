@@ -44,6 +44,23 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Bliss Nepal API is running' });
 });
 
+// One-time seed trigger (protected by SEED_SECRET)
+app.get('/api/seed', async (req, res) => {
+  if (req.query.secret !== process.env.SEED_SECRET) {
+    return res.status(401).json({ error: 'Invalid seed secret' });
+  }
+  try {
+    const { execSync } = require('child_process');
+    const seedPath = path.join(__dirname, 'src/seeds/seed.js');
+    const quizPath = path.join(__dirname, 'src/seeds/seedQuiz.js');
+    execSync(`node ${seedPath}`, { cwd: __dirname, stdio: 'inherit' });
+    execSync(`node ${quizPath}`, { cwd: __dirname, stdio: 'inherit' });
+    res.json({ message: 'Seed completed' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Error handling
 app.use(notFound);
 app.use(errorHandler);
